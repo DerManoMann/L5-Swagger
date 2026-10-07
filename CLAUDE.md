@@ -37,7 +37,9 @@ composer run-script analyse
 5. `saveJson()` — writes JSON, then `SecurityDefinitions::generate()` injects security schemes
 6. `makeYamlCopy()` — optional YAML conversion via `symfony/yaml`
 
-Custom processors can be positioned relative to any existing processor via `scanOptions.processors` using `['class' => ..., 'after' => ...]` syntax. A `CustomGeneratorInterface` implementation can be provided via `scanOptions.generator_factory` to supply a pre-configured `OpenApi\Generator`.
+Custom processors can be positioned relative to any existing processor via `scanOptions.processors` using `['class' => ..., 'after' => ...]` syntax.
+ A `CustomGeneratorInterface` implementation can be provided via `scanOptions.generator_factory` to supply a pre-configured `OpenApi\Generator`.
+ Alternatively, a `CustomBuilderInterface` implementation via `scanOptions.builder_factory` supplies an `OpenApi\Builder`, which can run swagger-php's spec or hybrid mode; step 3 then builds through it. In those modes the base path is added as a `Spec\Server` through `Builder::withSpecification()` (swagger-php 6.12+) and `saveJson()` writes the `Builder\Result`; classic mode still goes through the `OpenApi` annotation. The two factories are mutually exclusive.
 
 ### Service Container Bindings
 
